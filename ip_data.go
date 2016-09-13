@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type IpData []*IpRange
@@ -25,14 +26,14 @@ func (id *IpData) Load(df string) error {
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
-		line := scanner.Bytes()
-		item := bytes.SplitN(line, []byte("\t"), ipRangeFieldCount)
+		line := scanner.Text()
+		item := strings.SplitN(line, "\t", ipRangeFieldCount)
 		if len(item) != ipRangeFieldCount {
 			continue
 		}
 
-		begin, _ := strconv.Atoi(string(item[0]))
-		end, _ := strconv.Atoi(string(item[1]))
+		begin, _ := strconv.Atoi(item[0])
+		end, _ := strconv.Atoi(item[1])
 		if begin > end {
 			continue
 		}
@@ -40,7 +41,7 @@ func (id *IpData) Load(df string) error {
 		ir := &IpRange{
 			Begin: uint32(begin),
 			End:   uint32(end),
-			Data:  []byte(string(item[2])),
+			Data:  []byte(item[2]),
 		}
 
 		*id = append(*id, ir)
@@ -77,7 +78,7 @@ func (id *IpData) getIpRange(ip string) (*IpRange, error) {
 	var low, high int = 0, (id.Length() - 1)
 
 	ipdt := *id
-	il := id.ip2Long(ip)
+	il := ip2Long(ip)
 	if il <= 0 {
 		return nil, ErrorIpRangeNotFound
 	}
@@ -99,7 +100,7 @@ func (id *IpData) getIpRange(ip string) (*IpRange, error) {
 	return nil, ErrorIpRangeNotFound
 }
 
-func (id *IpData) ip2Long(ip string) uint32 {
+func ip2Long(ip string) uint32 {
 	var long uint32
 	binary.Read(bytes.NewBuffer(net.ParseIP(ip).To4()), binary.BigEndian, &long)
 	return long

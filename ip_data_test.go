@@ -113,8 +113,7 @@ func TestIpData_Parallel_Find(t *testing.T) {
 	wg.Wait()
 }
 
-func TestIpData_ip2Long(t *testing.T) {
-	ipData := NewIpData()
+func Testip2Long(t *testing.T) {
 	var cases = []struct {
 		ip   string
 		long uint32
@@ -130,7 +129,7 @@ func TestIpData_ip2Long(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		il := ipData.ip2Long(c.ip)
+		il := ip2Long(c.ip)
 		if il != c.long {
 			t.Errorf("ip2long for %s failed. expected %d, got %d.", c.ip, c.long, il)
 		}
