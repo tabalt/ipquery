@@ -47,7 +47,7 @@ func (id *IpData) Load(df string) error {
 		*id = append(*id, ir)
 	}
 
-	return nil
+	return scanner.Err()
 }
 
 func (id *IpData) ReLoad(df string) error {
