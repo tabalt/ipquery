@@ -9,7 +9,7 @@ package main
 
 import (
     "fmt"
-    "github.com/Andals/ipquery"
+    "github.com/tabalt/ipquery"
 )
 
 func main() {
