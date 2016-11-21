@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/binary"
+	"io"
 	"net"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -17,13 +17,8 @@ func NewIpData() *IpData {
 }
 
 //TODO 初始化后对数据做排序
-func (id *IpData) Load(df string) error {
-	file, err := os.Open(df)
-	if err != nil {
-		return err
-	}
-
-	scanner := bufio.NewScanner(file)
+func (id *IpData) Load(r io.Reader) error {
+	scanner := bufio.NewScanner(r)
 
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -50,9 +45,9 @@ func (id *IpData) Load(df string) error {
 	return scanner.Err()
 }
 
-func (id *IpData) ReLoad(df string) error {
+func (id *IpData) ReLoad(r io.Reader) error {
 	nid := NewIpData()
-	err := nid.Load(df)
+	err := nid.Load(r)
 	if err != nil {
 		return err
 	}

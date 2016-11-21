@@ -1,6 +1,8 @@
 package ipquery
 
-import ()
+import (
+	"os"
+)
 
 var defaultIpData *IpData
 
@@ -9,11 +11,19 @@ func init() {
 }
 
 func Load(df string) error {
-	return defaultIpData.Load(df)
+	reader, err := os.Open(df)
+	if err != nil {
+		return err
+	}
+	return defaultIpData.Load(reader)
 }
 
 func ReLoad(df string) error {
-	return defaultIpData.ReLoad(df)
+	reader, err := os.Open(df)
+	if err != nil {
+		return err
+	}
+	return defaultIpData.ReLoad(reader)
 }
 
 func Length() int {

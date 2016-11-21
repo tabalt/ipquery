@@ -1,9 +1,16 @@
 package ipquery
 
 import (
+	"io"
+	"os"
 	"sync"
 	"testing"
 )
+
+func getFileReader(file string) io.Reader {
+	reader, _ := os.Open(file)
+	return reader
+}
 
 func TestIpData_Load(t *testing.T) {
 	ipData := NewIpData()
@@ -12,7 +19,7 @@ func TestIpData_Load(t *testing.T) {
 	df := "testdata/test_10.data"
 	length := 10
 
-	err := ipData.Load(df)
+	err := ipData.Load(getFileReader(df))
 	if err != nil {
 		t.Fatalf("load exists data file failed: %s.", err)
 	}
@@ -25,7 +32,7 @@ func TestIpData_Load(t *testing.T) {
 	df = "testdata/test_10000.data"
 	length = 10000
 
-	err = ipData.ReLoad(df)
+	err = ipData.ReLoad(getFileReader(df))
 	if err != nil {
 		t.Fatalf("reload data file failed: %s.", err)
 	}
@@ -36,7 +43,8 @@ func TestIpData_Load(t *testing.T) {
 
 	// test load not exists data file
 	df = "testdata/not_exists.data"
-	err = ipData.Load(df)
+
+	err = ipData.Load(getFileReader(df))
 	if err == nil {
 		t.Fatalf("load not exists data file must be failed.")
 	}
@@ -64,7 +72,7 @@ var findCases = []struct {
 func TestIpData_Find(t *testing.T) {
 	ipData := NewIpData()
 	df := "testdata/test_10000.data"
-	err := ipData.Load(df)
+	err := ipData.Load(getFileReader(df))
 	if err != nil {
 		t.Fatalf("load exists data file failed: %s.", err)
 	}
@@ -87,7 +95,7 @@ func TestIpData_Parallel_Find(t *testing.T) {
 
 	ipData := NewIpData()
 	df := "testdata/test_10000.data"
-	err := ipData.Load(df)
+	err := ipData.Load(getFileReader(df))
 	if err != nil {
 		t.Fatalf("load exists data file failed: %s.", err)
 	}
@@ -140,7 +148,7 @@ func BenchmarkIpData_Load(b *testing.B) {
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
 		ipData := NewIpData()
-		err := ipData.Load("testdata/ip_chunzhen.txt")
+		err := ipData.Load(getFileReader("testdata/ip_chunzhen.txt"))
 		if err != nil {
 			b.Fatalf("load exists data file failed: %s.", err)
 		}
@@ -152,7 +160,7 @@ func BenchmarkIpData_Find(b *testing.B) {
 	b.ResetTimer()
 
 	ipData := NewIpData()
-	err := ipData.Load("testdata/ip_chunzhen.txt")
+	err := ipData.Load(getFileReader("testdata/ip_chunzhen.txt"))
 	if err != nil {
 		b.Fatalf("load exists data file failed: %s.", err)
 	}
