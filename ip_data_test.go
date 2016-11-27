@@ -16,7 +16,7 @@ func TestIpData_Load(t *testing.T) {
 	ipData := NewIpData()
 
 	// test load data file
-	df := "testdata/test_10.data"
+	df := "testdata/test_10.txt"
 	length := 10
 
 	err := ipData.Load(getFileReader(df))
@@ -29,7 +29,7 @@ func TestIpData_Load(t *testing.T) {
 	}
 
 	// test reload data file
-	df = "testdata/test_10000.data"
+	df = "testdata/test_10000.txt"
 	length = 10000
 
 	err = ipData.ReLoad(getFileReader(df))
@@ -42,7 +42,7 @@ func TestIpData_Load(t *testing.T) {
 	}
 
 	// test load not exists data file
-	df = "testdata/not_exists.data"
+	df = "testdata/not_exists.txt"
 
 	err = ipData.Load(getFileReader(df))
 	if err == nil {
@@ -71,7 +71,7 @@ var findCases = []struct {
 
 func TestIpData_Find(t *testing.T) {
 	ipData := NewIpData()
-	df := "testdata/test_10000.data"
+	df := "testdata/test_10000.txt"
 	err := ipData.Load(getFileReader(df))
 	if err != nil {
 		t.Fatalf("load exists data file failed: %s.", err)
@@ -94,7 +94,7 @@ func TestIpData_Parallel_Find(t *testing.T) {
 	var wg sync.WaitGroup
 
 	ipData := NewIpData()
-	df := "testdata/test_10000.data"
+	df := "testdata/test_10000.txt"
 	err := ipData.Load(getFileReader(df))
 	if err != nil {
 		t.Fatalf("load exists data file failed: %s.", err)
