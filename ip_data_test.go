@@ -78,13 +78,13 @@ func TestIpData_Find(t *testing.T) {
 	}
 
 	for _, c := range findCases {
-		dt, err := ipData.Find(c.ip)
+		ir, err := ipData.Find(c.ip)
 		if err != c.err {
 			t.Errorf("find data for %s expected error: %v, got: %v.", c.ip, c.err, err)
 		}
 
-		if err == nil && string(dt) != string(c.data) {
-			t.Errorf("find data for %s failed. expected: %s, got: %s.", c.ip, string(c.data), string(dt))
+		if err == nil && string(ir.Data) != string(c.data) {
+			t.Errorf("find data for %s failed. expected: %s, got: %s.", c.ip, string(c.data), string(ir.Data))
 		}
 	}
 }
@@ -106,13 +106,13 @@ func TestIpData_Parallel_Find(t *testing.T) {
 			defer wg.Done()
 
 			for _, c := range findCases {
-				dt, err := ipData.Find(c.ip)
+				ir, err := ipData.Find(c.ip)
 				if err != c.err {
 					t.Errorf("find data for %s expected error: %v, got: %v.", c.ip, c.err, err)
 				}
 
-				if err == nil && string(dt) != string(c.data) {
-					t.Errorf("find data for %s failed. expected: %s, got: %s.", c.ip, string(c.data), string(dt))
+				if err == nil && string(ir.Data) != string(c.data) {
+					t.Errorf("find data for %s failed. expected: %s, got: %s.", c.ip, string(c.data), string(ir.Data))
 				}
 			}
 		}()

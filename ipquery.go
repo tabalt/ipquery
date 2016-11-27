@@ -31,5 +31,10 @@ func Length() int {
 }
 
 func Find(ip string) ([]byte, error) {
-	return defaultIpData.Find(ip)
+	ir, err := defaultIpData.Find(ip)
+	if err != nil {
+		return nil, err
+	} else {
+		return ir.Data, nil
+	}
 }

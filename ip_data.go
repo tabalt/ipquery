@@ -46,13 +46,13 @@ func (id *IpData) Load(r io.Reader) error {
 }
 
 func (id *IpData) ReLoad(r io.Reader) error {
-	nid := NewIpData()
-	err := nid.Load(r)
+	nId := NewIpData()
+	err := nId.Load(r)
 	if err != nil {
 		return err
 	}
 
-	*id = *nid
+	*id = *nId
 	return nil
 }
 
@@ -60,13 +60,13 @@ func (id *IpData) Length() int {
 	return len(*id)
 }
 
-func (id *IpData) Find(ip string) ([]byte, error) {
+func (id *IpData) Find(ip string) (*IpRange, error) {
 	ir, err := id.getIpRange(ip)
 	if err != nil {
 		return nil, err
 	}
 
-	return ir.Data, nil
+	return ir, nil
 }
 
 func (id *IpData) getIpRange(ip string) (*IpRange, error) {
